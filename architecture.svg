@@ -1,0 +1,333 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 1445">
+  <defs>
+    <filter id="sh" x="-3%" y="-2%" width="106%" height="110%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.5" result="b"/>
+      <feOffset in="b" dy="2" result="o"/>
+      <feFlood flood-color="#000" flood-opacity="0.08" result="c"/>
+      <feComposite in="c" in2="o" operator="in" result="s"/>
+      <feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="a" viewBox="0 0 10 8" refX="10" refY="4" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0 .5L9 4 0 7.5Z" fill="#94A3B8"/>
+    </marker>
+    <marker id="ao" viewBox="0 0 10 8" refX="10" refY="4" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0 .5L9 4 0 7.5Z" fill="#F97316"/>
+    </marker>
+  </defs>
+
+  <rect width="1300" height="1445" fill="#F8FAFC"/>
+
+  <!-- Header -->
+  <rect width="1300" height="58" fill="#0F172A"/>
+  <text x="650" y="26" text-anchor="middle" font-size="19" font-weight="700" fill="white" font-family="system-ui,sans-serif">Transparent File System Architecture</text>
+  <text x="650" y="46" text-anchor="middle" font-size="11" fill="#94A3B8" font-family="system-ui,sans-serif">Content-Addressed Storage &#xB7; Platform-Agnostic VFS &#xB7; Two-Phase Sync Protocol</text>
+
+  <!-- CLIENT SECTION -->
+  <rect x="20" y="70" width="1260" height="693" rx="12" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="42" y="86" font-size="11" font-weight="700" fill="#1E40AF" letter-spacing="1.5" font-family="system-ui,sans-serif">CLIENT (each device: Browser / Desktop / iOS / Android)</text>
+
+  <!-- Card 1: Dioxus UI -->
+  <rect x="44" y="90" width="1212" height="90" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="46" y="98" width="3.5" height="74" rx="1.75" fill="#4F46E5"/>
+  <foreignObject x="44" y="90" width="1212" height="90">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 18px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:.03em;color:#312E81;">DIOXUS UI LAYER</span>
+        <span style="font-size:9.5px;color:#9CA3AF;white-space:nowrap;margin-left:12px;">Dioxus 0.7.3 &#xB7; Signals reactivity</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Cross-platform UI framework rendering via WebView (Wry) on all platforms. On mobile (iOS and Android), Rust code runs <strong>natively as aarch64, not as WASM</strong>. This means std::fs, Diesel, and tokio all work on mobile without browser-specific APIs. Only the browser target compiles to wasm32 and requires OPFS and Web Workers. Uses Signals as the primary reactivity primitive. Dioxus provides no built-in file system or storage abstraction; the FileStore trait below must be built and wired in per platform.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Arrow -->
+  <line x1="650" y1="180" x2="650" y2="194" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Card 2: FileStore Trait -->
+  <rect x="44" y="196" width="1212" height="82" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="46" y="204" width="3.5" height="66" rx="1.75" fill="#7C3AED"/>
+  <foreignObject x="44" y="196" width="1212" height="82">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 18px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:.03em;color:#4C1D95;">FILESTORE TRAIT &#x2014; Platform-Agnostic VFS</span>
+        <span style="font-size:9.5px;color:#9CA3AF;white-space:nowrap;margin-left:12px;">Custom async trait &#xB7; ?Send for WASM</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        The central abstraction of the architecture. Defines five async methods: read(), write(), delete(), exists(), list(). Marked <strong>#[async_trait(?Send)]</strong> because WASM is single-threaded. All code above this boundary is platform-independent; all code below provides platform-specific implementations. Same pattern as HTSlib hfile plugins (URL-scheme routing) and R Spectra MsBackend (swappable storage backends).
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Branching arrows -->
+  <line x1="300" y1="278" x2="240" y2="294" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="650" y1="278" x2="650" y2="294" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="1000" y1="278" x2="1060" y2="294" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Card 3a: NativeFs -->
+  <rect x="44" y="296" width="393" height="148" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="46" y="304" width="3.5" height="132" rx="1.75" fill="#059669"/>
+  <foreignObject x="44" y="296" width="393" height="148">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 14px 5px 20px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#064E3B;">NATIVE FS</span>
+        <span style="font-size:9px;color:#9CA3AF;white-space:nowrap;margin-left:8px;">std::fs + Diesel 2.2</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        For <strong>Desktop, iOS, and Android</strong>. Uses standard Rust std::fs for all file I/O and Diesel ORM for the local SQLite metadata and chunk database. iOS: sandboxed app container, SQLite in Library/Application Support/. Android: app data directory via getFilesDir(). Full tokio async runtime available on all native platforms.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 3b: WasmFs -->
+  <rect x="451" y="296" width="393" height="148" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="453" y="304" width="3.5" height="132" rx="1.75" fill="#059669"/>
+  <foreignObject x="451" y="296" width="393" height="148">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 14px 5px 20px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#064E3B;">WASM FS</span>
+        <span style="font-size:9px;color:#9CA3AF;white-space:nowrap;margin-left:8px;">sqlite-wasm-rs 0.5 &#xB7; OPFS</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        <strong>Browser only</strong> (wasm32 target). SQLite runs via sqlite-wasm-rs using the sahpool VFS backed by OPFS (Origin Private File System). <strong>Must run in a dedicated Web Worker</strong>: OPFS sync access handles are Worker-only and blocking the main thread freezes the UI. Call navigator.storage.persist() at startup to prevent the browser from evicting stored data.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 3c: PostgresFs -->
+  <rect x="858" y="296" width="398" height="148" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="860" y="304" width="3.5" height="132" rx="1.75" fill="#059669"/>
+  <foreignObject x="858" y="296" width="398" height="148">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 14px 5px 20px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#064E3B;">POSTGRES FS</span>
+        <span style="font-size:9px;color:#9CA3AF;white-space:nowrap;margin-left:8px;">sqlx 0.8 &#xB7; PostgreSQL 18</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        <strong>Backend server only</strong>. Direct async access to PostgreSQL via sqlx for metadata and chunk storage. Used by the axum API server to handle sync requests from clients. Not available on any client platform: there is no PostgreSQL on mobile or in the browser. Can optionally use OpenDAL for S3/GCS/Azure multi-cloud access.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Arrows to CAS row -->
+  <line x1="400" y1="444" x2="400" y2="460" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="650" y1="444" x2="650" y2="460" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Card 4a: CAS Pipeline -->
+  <rect x="44" y="462" width="696" height="126" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="46" y="470" width="3.5" height="110" rx="1.75" fill="#D97706"/>
+  <foreignObject x="44" y="462" width="696" height="126">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 16px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#78350F;">CONTENT-ADDRESSED STORAGE (CAS)</span>
+        <span style="font-size:9px;color:#9CA3AF;white-space:nowrap;margin-left:8px;">BLAKE3 1.6 + FastCDC 3.2</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Every file is split into variable-size chunks (16 KB min, 64 KB avg, 256 KB max) using FastCDC content-defined chunking, then each chunk is hashed with BLAKE3. A file's identity becomes its <strong>Merkle root hash</strong>. If two files share content, chunks deduplicate automatically. Files under 256 KB skip chunking (single blob). This makes sync efficient: editing 1 KB in a 100 MB file transfers only ~64 KB (one changed chunk). All hashing and chunking work in WASM at ~200 MB/s.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 4b: Sync Outbox -->
+  <rect x="754" y="462" width="502" height="126" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="756" y="470" width="3.5" height="110" rx="1.75" fill="#DC2626"/>
+  <foreignObject x="754" y="462" width="502" height="126">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 16px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#7F1D1D;">SYNC OUTBOX</span>
+        <span style="font-size:9px;color:#9CA3AF;white-space:nowrap;margin-left:8px;">SQLite queue &#xB7; per device</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Local SQLite table queuing every file operation while the device is offline. Each op is tagged with a unique triple <strong>(device_id, local_seq, op_id)</strong> for idempotent replay: the same operation can safely be sent twice with no side effects. On reconnect, sends queued operations in strict order, applies exponential backoff on failure, and marks sent_at on success.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 5: Loro (Optional) -->
+  <rect x="44" y="608" width="980" height="140" rx="10" fill="white" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="7 4" filter="url(#sh)"/>
+  <rect x="46" y="616" width="3.5" height="124" rx="1.75" fill="#8B5CF6"/>
+  <foreignObject x="44" y="608" width="980" height="140">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 18px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:.03em;color:#4C1D95;">TREE CRDT &#x2014; LORO</span>
+        <span style="font-size:9px;color:#8B5CF6;font-weight:600;background:#F5F3FF;padding:1px 6px;border-radius:3px;margin-left:6px;">OPTIONAL</span>
+        <span style="font-size:9.5px;color:#9CA3AF;white-space:nowrap;margin-left:auto;padding-left:12px;">Loro 1.10.6 &#xB7; 5.4k stars &#xB7; 1.0+ stable</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        CRDT-safe directory tree that prevents cycles and orphaned files during concurrent moves. When Device A moves /docs/readme to /archive/ while Device B simultaneously moves /archive to /docs/archive, naive approaches create cycles or orphan nodes. Loro resolves this deterministically using Kleppmann's algorithm. <strong>When to use:</strong> teams expecting frequent multi-device concurrent folder reorganization, where silently discarding one user's move is unacceptable. <strong>Alternative:</strong> SQL parent_id with last-writer-wins (simpler and sufficient when concurrent structural edits are rare). Also evaluate yrs_tree 0.4.1 (Yjs extension) at decision time. Ships WASM and Swift bindings with built-in time-travel and shallow snapshots for compaction.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Device B indicator (inside client section, right of Loro) -->
+  <rect x="1038" y="608" width="218" height="140" rx="8" fill="#EFF6FF" stroke="#93C5FD" stroke-width=".8"/>
+  <foreignObject x="1038" y="608" width="218" height="140">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:8px 12px;font-family:system-ui,-apple-system,sans-serif;text-align:center;">
+      <div style="font-size:10.5px;font-weight:700;color:#1E40AF;margin-bottom:6px;">Device B (same stack)</div>
+      <div style="background:#3B82F6;color:white;font-size:8.5px;padding:2px 0;border-radius:3px;margin-bottom:3px;">Dioxus UI + FileStore</div>
+      <div style="background:#059669;color:white;font-size:8.5px;padding:2px 0;border-radius:3px;margin-bottom:3px;">SQLite + CAS Pipeline</div>
+      <div style="background:#DC2626;color:white;font-size:8.5px;padding:2px 0;border-radius:3px;margin-bottom:3px;">Sync Outbox</div>
+      <div style="background:#8B5CF6;color:white;font-size:8.5px;padding:2px 0;border-radius:3px;">Loro (optional)</div>
+    </div>
+  </foreignObject>
+
+  <!-- Sync arrows: Client to Sync -->
+  <line x1="450" y1="763" x2="450" y2="783" stroke="#F97316" stroke-width="2" marker-end="url(#ao)"/>
+  <line x1="850" y1="763" x2="850" y2="783" stroke="#F97316" stroke-width="2" marker-end="url(#ao)"/>
+  <line x1="1148" y1="748" x2="1148" y2="783" stroke="#F97316" stroke-width="2" marker-end="url(#ao)"/>
+
+  <!-- SYNC PROTOCOL SECTION -->
+  <rect x="20" y="786" width="1260" height="143" rx="12" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1"/>
+  <text x="650" y="806" text-anchor="middle" font-size="13" font-weight="700" fill="#9A3412" font-family="system-ui,sans-serif">SYNC PROTOCOL &#x2014; HTTP / WebSocket (reqwest 0.12)</text>
+  <foreignObject x="44" y="809" width="1212" height="36">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif;font-size:10.5px;line-height:1.55;color:#4B5563;text-align:justify;">
+      Devices communicate with the backend over HTTP or WebSocket. The protocol follows two strict phases. Each device has a unique device_id and local sequence counter for idempotent replay. Only chunk hashes the receiver does not already have are transferred: a 100 MB file with a 1 KB edit transfers ~64 KB.
+    </div>
+  </foreignObject>
+
+  <!-- Phase 1 -->
+  <rect x="44" y="851" width="599" height="68" rx="8" fill="#FFEDD5" stroke="#FDBA74" stroke-width=".8"/>
+  <foreignObject x="44" y="851" width="599" height="68">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:7px 14px 4px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="font-size:11px;font-weight:700;color:#9A3412;margin-bottom:3px;">PHASE 1: METADATA FIRST</div>
+      <div style="font-size:10px;line-height:1.5;color:#78350F;text-align:justify;">Tree structure changes, file revisions, op-log entries, and CRDT state (if using Loro). The server assigns canonical commit ordering so all devices converge to the same state.</div>
+    </div>
+  </foreignObject>
+
+  <!-- Phase 2 -->
+  <rect x="657" y="851" width="599" height="68" rx="8" fill="#FFEDD5" stroke="#FDBA74" stroke-width=".8"/>
+  <foreignObject x="657" y="851" width="599" height="68">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:7px 14px 4px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="font-size:11px;font-weight:700;color:#9A3412;margin-bottom:3px;">PHASE 2: CONTENT CHUNKS SECOND</div>
+      <div style="font-size:10px;line-height:1.5;color:#78350F;text-align:justify;">Client sends its chunk hash list. Server replies with which hashes it needs (POST /chunks/need). Only missing chunks upload. Each chunk is BLAKE3-verified on receipt. No redundant data.</div>
+    </div>
+  </foreignObject>
+
+  <!-- Sync arrows: Sync to Server -->
+  <line x1="450" y1="929" x2="450" y2="949" stroke="#F97316" stroke-width="2" marker-end="url(#ao)"/>
+  <line x1="850" y1="929" x2="850" y2="949" stroke="#F97316" stroke-width="2" marker-end="url(#ao)"/>
+
+  <!-- SERVER SECTION -->
+  <rect x="20" y="952" width="1260" height="393" rx="12" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="42" y="969" font-size="11" font-weight="700" fill="#166534" letter-spacing="1.5" font-family="system-ui,sans-serif">SERVER (Backend &#x2014; Linux)</text>
+
+  <!-- Card 6: axum API -->
+  <rect x="44" y="975" width="1212" height="82" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="46" y="983" width="3.5" height="66" rx="1.75" fill="#2563EB"/>
+  <foreignObject x="44" y="975" width="1212" height="82">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 18px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:.03em;color:#1E3A8A;">AXUM HTTP / WEBSOCKET API</span>
+        <span style="font-size:9.5px;color:#9CA3AF;white-space:nowrap;margin-left:12px;">axum 0.7 + tokio 1.x</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Backend server handling all client sync requests. <strong>POST /sync/metadata</strong> receives op-log and CRDT state; server assigns canonical ordering. <strong>POST /sync/chunks</strong> accepts content chunks the server is missing, with BLAKE3 verification. <strong>GET /chunks/{hash}</strong> serves individual chunks to clients. <strong>POST /chunks/need</strong> lets clients send a hash list to determine which chunks the server still requires.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Arrows: API to stores -->
+  <line x1="400" y1="1057" x2="340" y2="1075" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="900" y1="1057" x2="960" y2="1075" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Card 7a: PostgreSQL -->
+  <rect x="44" y="1077" width="599" height="126" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="46" y="1085" width="3.5" height="110" rx="1.75" fill="#16A34A"/>
+  <foreignObject x="44" y="1077" width="599" height="126">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 16px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#14532D;">POSTGRESQL &#x2014; METADATA</span>
+        <span style="font-size:9px;color:#9CA3AF;white-space:nowrap;margin-left:8px;">PostgreSQL 18 &#xB7; sqlx 0.8</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Server-side source of truth for all metadata: <strong>file_tree</strong> (parent/child directory relationships), <strong>files</strong> (path, root hash, size, MIME type), <strong>file_chunks</strong> (ordered chunk list per file), <strong>revision graph</strong> (parent_revision_id for branching), <strong>op-log</strong> for idempotent replay, and <strong>tombstones</strong> with 30-day retention. File identity uses UUIDv7 (sortable, timestamp-embedded). Paths are mutable metadata, not identity.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 7b: Chunk Store -->
+  <rect x="657" y="1077" width="599" height="126" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="659" y="1085" width="3.5" height="110" rx="1.75" fill="#16A34A"/>
+  <foreignObject x="657" y="1077" width="599" height="126">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 16px 5px 22px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#14532D;">CHUNK STORE &#x2014; CAS BLOBS</span>
+        <span style="font-size:9px;color:#9CA3AF;white-space:nowrap;margin-left:8px;">BLAKE3 hash &#x2192; data</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Content-addressed blob storage. Each chunk is keyed by its BLAKE3 hash: identical data always maps to the same key, enabling automatic deduplication. <strong>Under 100 GB total:</strong> stored in Postgres BYTEA columns (simple, no external dependency). <strong>Over 100 GB:</strong> chunk data moves to S3 or compatible object storage; metadata stays in Postgres. Reference counting tracks chunk usage for garbage collection of orphaned data.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 8a: Two-Phase Commit -->
+  <rect x="44" y="1223" width="390" height="108" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="46" y="1231" width="3.5" height="92" rx="1.75" fill="#0891B2"/>
+  <foreignObject x="44" y="1223" width="390" height="108">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 14px 5px 20px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#164E63;">TWO-PHASE COMMIT</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Prevents partial uploads from appearing as valid versions. 1) Create pending revision. 2) Upload and verify all chunks. 3) Atomically mark committed. Failed commits leave orphaned chunks that are garbage-collected after timeout.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 8b: Derived Data -->
+  <rect x="448" y="1223" width="400" height="108" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="450" y="1231" width="3.5" height="92" rx="1.75" fill="#0891B2"/>
+  <foreignObject x="448" y="1223" width="400" height="108">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 14px 5px 20px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#164E63;">DERIVED DATA GENERATION</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Server generates thumbnails (WebP 256px), previews (1024px), video frames (FFmpeg), PDF renders, and extracted text for search. Each stored as a separate CAS blob for progressive loading: metadata, then thumbnail, then full content.
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- Card 8c: Conflict Resolution -->
+  <rect x="862" y="1223" width="394" height="108" rx="10" fill="white" stroke="#E2E8F0" stroke-width=".7" filter="url(#sh)"/>
+  <rect x="864" y="1231" width="3.5" height="92" rx="1.75" fill="#0891B2"/>
+  <foreignObject x="862" y="1223" width="394" height="108">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="box-sizing:border-box;padding:10px 14px 5px 20px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="border-bottom:1px solid #E5E7EB;padding-bottom:5px;margin-bottom:7px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.03em;color:#164E63;">CONFLICT RESOLUTION</span>
+      </div>
+      <div style="font-size:10.5px;line-height:1.6;color:#4B5563;text-align:justify;">
+        Binary: keep both copies. Text: 3-way merge, else keep both. Renames: last-writer-wins (Lamport). Moves: Loro deterministic or LWW in SQL mode. Delete vs edit: edit wins (resurrection policy).
+      </div>
+    </div>
+  </foreignObject>
+
+  <!-- LEGEND -->
+  <rect x="20" y="1363" width="1260" height="46" rx="8" fill="white" stroke="#E2E8F0" stroke-width=".7"/>
+  <text x="40" y="1391" font-size="10" font-weight="700" fill="#475569" font-family="system-ui,sans-serif">LEGEND</text>
+  <rect x="105" y="1383" width="10" height="10" rx="2" fill="#4F46E5"/>
+  <text x="119" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">UI</text>
+  <rect x="148" y="1383" width="10" height="10" rx="2" fill="#7C3AED"/>
+  <text x="162" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">VFS</text>
+  <rect x="195" y="1383" width="10" height="10" rx="2" fill="#059669"/>
+  <text x="209" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Adapters</text>
+  <rect x="275" y="1383" width="10" height="10" rx="2" fill="#D97706"/>
+  <text x="289" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">CAS</text>
+  <rect x="325" y="1383" width="10" height="10" rx="2" fill="#DC2626"/>
+  <text x="339" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Sync Queue</text>
+  <rect x="415" y="1383" width="10" height="10" rx="2" fill="#2563EB"/>
+  <text x="429" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Server API</text>
+  <rect x="510" y="1383" width="10" height="10" rx="2" fill="#16A34A"/>
+  <text x="524" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Storage</text>
+  <rect x="585" y="1383" width="10" height="10" rx="2" fill="#0891B2"/>
+  <text x="599" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Server Logic</text>
+  <rect x="690" y="1383" width="10" height="10" rx="2" fill="#8B5CF6" stroke="#C4B5FD" stroke-width=".6" stroke-dasharray="2 1.5"/>
+  <text x="704" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Optional (dashed)</text>
+  <line x1="818" y1="1388" x2="846" y2="1388" stroke="#F97316" stroke-width="2" marker-end="url(#ao)"/>
+  <text x="852" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Sync flow</text>
+  <line x1="915" y1="1388" x2="943" y2="1388" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="949" y="1392" font-size="9.5" fill="#475569" font-family="system-ui,sans-serif">Internal flow</text>
+
+  <!-- Footer -->
+  <text x="650" y="1435" text-anchor="middle" font-size="9.5" fill="#94A3B8" font-family="system-ui,sans-serif">Based on joint review by Claude + Codex &#xB7; February 2026 &#xB7; See README.md for full details</text>
+</svg>
